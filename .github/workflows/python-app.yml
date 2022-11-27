@@ -14,10 +14,12 @@ permissions:
 
 jobs:
   build:
+  
+    strategy:
+        matrix:
+            OS: [ubuntu-latest, windows-latest]
 
-    runs-on: ubuntu-latest
-    concurrency:
-      group: analiza
+    runs-on: ${{matrix.OS}}
     defaults:
       run:
         working-directory: ./example-app
@@ -73,9 +75,6 @@ jobs:
         key: ${{ runner.os }}-venv
     - name: Lint with flake8
       run: |
-        poetry run task lint
-    - name: Test with formatter
-      run: |
        source $VENV poetry run task formatter
     
   formatter:
@@ -96,16 +95,14 @@ jobs:
         python-version: "3.10"
     - name: Install Poetry Action
       uses: snok/install-poetry@v1.3.3
-      with:
-            virtualenvs-create: true
-            virtualevns-in-projects: true
+      
     - name: Cache build venv
       id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
         path: /home/runner/work/iac-labs/iac-labs/example-app/.venv
         key: ${{ runner.os }}-venv
-    - name: Test with formatter
+    - name: Formatter with formatter
       run: |
        source $VENV poetry run task formatter
     
@@ -127,16 +124,13 @@ jobs:
         python-version: "3.10"
     - name: Install Poetry Action
       uses: snok/install-poetry@v1.3.3
-      with:
-            virtualenvs-create: true
-            virtualevns-in-projects: true
     - name: Cache build venv
       id: cached-poetry-dependencies
       uses: actions/cache@v3
       with:
         path: /home/runner/work/iac-labs/iac-labs/example-app/.venv
         key: ${{ runner.os }}-venv
-    - name: Test with security
+    - name: Security with bandit
       run: |
        source $VENV poetry run task security
    
@@ -156,9 +150,7 @@ jobs:
         python-version: "3.10"
     - name: Install Poetry Action
       uses: snok/install-poetry@v1.3.3
-      with:
-            virtualenvs-create: true
-            virtualevns-in-projects: true
+      
     - name: Cache build venv
       id: cached-poetry-dependencies
       uses: actions/cache@v3
