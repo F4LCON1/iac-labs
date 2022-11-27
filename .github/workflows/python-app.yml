@@ -36,4 +36,4 @@ jobs:
         poetry run task lint
     - name: Test with pytest
       run: |
-        poetry run time test
+        poetry run task test
