@@ -118,8 +118,8 @@ jobs:
 
     runs-on: ubuntu-latest
     concurrency:
-      group: analiza
-    needs: build
+      group: test
+    needs: [lint, formatter, security]
     defaults:
       run:
         working-directory: ./example-app
