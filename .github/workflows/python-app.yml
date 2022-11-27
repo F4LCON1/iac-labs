@@ -16,6 +16,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    concurrency:
+      group: analiza
     defaults:
       run:
         working-directory: ./example-app
